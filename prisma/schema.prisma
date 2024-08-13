@@ -12,3 +12,33 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+
+
+model Character {
+  id String @unique @default(uuid())
+  x Int
+  y Int
+  name String
+  image Image @relation(fields: [imageId], references: [id])
+  imageId String
+  picture String
+}
+
+
+model Leaderboard {
+  id String @unique @default(uuid())
+  name String
+  timestamp DateTime
+  image Image @relation(references: [id], fields: [imageId])
+  imageId String 
+}
+
+model Image {
+  id String @unique @default(uuid())
+  url String
+  title String
+  characters Character[]
+  leaderboard Leaderboard[]
+}
