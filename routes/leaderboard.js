@@ -1,9 +1,10 @@
-import express from "express";
-const router = express.Router();
+import express from "express"
 
-router.get("/", (req, res) => {
+const router = express.Router()
 
-    res.send("Hello, world")
-});
 
-export default router;
+
+router.post("/", leaderboardPost)
+
+
+export default router

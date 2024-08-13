@@ -1,9 +1,9 @@
 import express from "express";
 const router = express.Router();
+import { checkCoordinates } from "../controllers/characterController.js";
 
-router.get("/", (req, res) => {
-  res.send("hello characters route")
-});
+
+router.post("/", checkCoordinates )
 
 
 

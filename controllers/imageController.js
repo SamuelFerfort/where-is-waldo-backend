@@ -20,7 +20,8 @@ export const getAllCharactersForImage = async (req, res, next) => {
       include: { characters: true },
     });
 
-    res.json({message: "Success", game})
+    console.log(game)
+    res.json(game)
   } catch (err) {
     console.error("Error fetching all game info:", err);
     res.status(500).json({ message: "Internal Server Error" });

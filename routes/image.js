@@ -7,6 +7,6 @@ import {
 
 router.get("/", getImages);
 
-router.get("/id", getAllCharactersForImage);
+router.get("/:id", getAllCharactersForImage);
 
 export default router;

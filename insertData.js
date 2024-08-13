@@ -34,6 +34,6 @@ async function insertCharacters() {
 
 }
 
-const images = await prisma.image.findMany();
 
-console.log(images)
+const characters = await prisma.character.findMany()
+console.log(characters)
