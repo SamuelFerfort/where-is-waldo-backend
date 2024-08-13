@@ -11,13 +11,12 @@ export const checkCoordinates = async (req, res) => {
         const characters = await prisma.character.findMany({
             where: { imageId }
         });
-        console.log("Found characters:", characters);  
         const foundCharacters = characters.filter(character => {
             const distance = Math.sqrt(
                 Math.pow((x - character.x), 2) + Math.pow((y - character.y), 2)
             );
             return distance <= character.radius;
-            console.log(`Character ${character.name}: distance = ${distance}, radius = ${character.radius}`);  // Debug log
+            console.log(`Character ${character.name}: distance = ${distance}, radius = ${character.radius}`);  
         });
 
         if (foundCharacters.length > 0) {
