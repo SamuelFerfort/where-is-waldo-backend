@@ -1,10 +1,12 @@
-import express from "express"
+import express from "express";
+import {
+  leaderboardPost,
+  getLeaderboard,
+} from "../controllers/leaderboardController";
+const router = express.Router();
 
-const router = express.Router()
+router.post("/", leaderboardPost);
 
+router.get("/", getLeaderboard);
 
-
-router.post("/", leaderboardPost)
-
-
-export default router
+export default router;
