@@ -2,7 +2,7 @@ import express from "express";
 import {
   leaderboardPost,
   getLeaderboard,
-} from "../controllers/leaderboardController";
+} from "../controllers/leaderboardController.js";
 const router = express.Router();
 
 router.post("/", leaderboardPost);

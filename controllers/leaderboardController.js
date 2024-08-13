@@ -9,7 +9,7 @@ export const leaderboardPost = async (req, res) => {
     await prisma.leaderboard.create({
       data: {
         name,
-        timestamp,
+        timestamp: time,
         imageId,
       },
     });
