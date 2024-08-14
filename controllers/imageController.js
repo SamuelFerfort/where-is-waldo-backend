@@ -17,10 +17,17 @@ export const getAllCharactersForImage = async (req, res, next) => {
   try {
     const game = await prisma.image.findUnique({
       where: { id: id },
-      include: { characters: true },
-    });
-
-    console.log(game)
+      select: {
+        id: true,
+        url: true,
+        title: true,
+        characters: {
+          select: {
+            id: true,
+            name: true,
+            picture: true,
+          }
+        }}})
     res.json(game)
   } catch (err) {
     console.error("Error fetching all game info:", err);

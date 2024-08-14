@@ -31,9 +31,9 @@ model Character {
 model Leaderboard {
   id String @unique @default(uuid())
   name String
-  timestamp DateTime
   image Image @relation(references: [id], fields: [imageId])
   imageId String 
+  duration Int
 }
 
 model Image {

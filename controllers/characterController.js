@@ -9,7 +9,7 @@ export const checkCoordinates = async (req, res) => {
 
     try {
         const characters = await prisma.character.findMany({
-            where: { imageId },select: {name: true, picture: true, radius: true}
+            where: { imageId }
         });
         const foundCharacters = characters.filter(character => {
             const distance = Math.sqrt(

@@ -3,18 +3,18 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const leaderboardPost = async (req, res) => {
-  const { name, time, imageId } = req.body;
+  const { name, duration, imageId } = req.body;
 
   try {
-    await prisma.leaderboard.create({
+    const newEntry = await prisma.leaderboard.create({
       data: {
         name,
-        timestamp: time,
+        duration,
         imageId,
       },
     });
 
-    res.json({ success: true });
+    res.json(newEntry);
   } catch (err) {
     console.error("Error posting to leaderboard", err);
     res.status(500).json(err.message);
@@ -22,12 +22,9 @@ export const leaderboardPost = async (req, res) => {
 };
 
 export const getLeaderboard = async (req, res) => {
-  const imageId = req.params.imageId;
-
   try {
-    const leaderboard = await prisma.leaderboard.findMany({
-      where: { imageId },
-    });
+    const leaderboard = await prisma.leaderboard.findMany();
+    console.log(leaderboard);
     res.json(leaderboard);
   } catch (err) {
     console.error("Error getting leaderboard", err);
