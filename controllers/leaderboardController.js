@@ -23,8 +23,13 @@ export const leaderboardPost = async (req, res) => {
 
 export const getLeaderboard = async (req, res) => {
   try {
-    const leaderboard = await prisma.leaderboard.findMany();
-    console.log(leaderboard);
+    const leaderboard = (await prisma.leaderboard.findMany({
+      orderBy:[
+        {
+          duration: "asc"
+        }
+      ]
+    }))
     res.json(leaderboard);
   } catch (err) {
     console.error("Error getting leaderboard", err);
