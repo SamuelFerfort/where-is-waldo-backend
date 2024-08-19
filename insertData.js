@@ -2,16 +2,43 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function insertData() {
+async function clearDatabase() {
   try {
-    await prisma.image.create({
-      data: {
-        url: "https://res.cloudinary.com/dy0av590l/image/upload/v1723935068/113_i6xfr9.jpg",
-        title: "Universe 113 Infested",
-      },
-    });
+    // Delete all characters first to avoid foreign key constraints
+    await prisma.character.deleteMany({});
+    console.log("All characters deleted");
+
+    // Then delete all images
+    await prisma.image.deleteMany({});
+    console.log("All images deleted");
+
+    console.log("Database cleared successfully");
   } catch (err) {
-    console.error("Error inserting image:", err);
+    console.error("Error clearing database:", err);
+  }
+}
+
+async function insertImages() {
+  try {
+    const result = await prisma.image.createMany({
+      data: [
+        {
+          url: "https://res.cloudinary.com/dy0av590l/image/upload/v1723935068/113_i6xfr9.jpg",
+          title: "Universe 113 Infested",
+        },
+        {
+          url: "https://res.cloudinary.com/dy0av590l/image/upload/v1723839489/futurama_n0fdii.jpg",
+          title: "Cyberpunk City",
+        },
+        {
+          url: "https://res.cloudinary.com/dy0av590l/image/upload/v1723839492/waldo_srxkbw.jpg",
+          title: "Universe 113",
+        },
+      ],
+    });
+    console.log(`Created ${result.count} images`);
+  } catch (err) {
+    console.error("Error inserting images:", err);
   }
 }
 
@@ -26,8 +53,7 @@ async function insertCharacters() {
         {
           name: "Link",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723875113/zelda_eyk0lj.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723881382/pngwing.com_thtvo5.png",
           x: 23,
           y: 95,
           radius: 2,
@@ -35,17 +61,15 @@ async function insertCharacters() {
         {
           name: "Samus",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723875164/samus_it9l64.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723881427/pngwing.com_2_mqwygw.png",
           x: 63,
           y: 95,
-          radius: 3,
+          radius: 2,
         },
         {
           name: "Stewie",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723874932/stewie_vwdo6z.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723881451/pngwing.com_3_haccra.png",
           x: 94,
           y: 76,
           radius: 2,
@@ -53,15 +77,14 @@ async function insertCharacters() {
         {
           name: "Aang",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723875351/aang_dcc2tj.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723881409/pngwing.com_1_wq5x8a.png",
           x: 6,
           y: 75,
           radius: 2,
         },
       ],
     });
-    console.log("Character created");
+    console.log("Characters created for Cyberpunk City");
   } catch (err) {
     console.error("Error inserting characters:", err);
   }
@@ -78,33 +101,30 @@ async function insertCharacters2ndImage() {
         {
           name: "Kratos",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723882248/pngwing.com_6_ppl4en.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723882248/pngwing.com_6_ppl4en.png",
           x: 46,
           y: 32,
-          radius: 1,
+          radius: 2,
         },
         {
           name: "Waldo",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723882203/pngwing.com_5_rbfw0n.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723882203/pngwing.com_5_rbfw0n.png",
           x: 15,
           y: 63,
-          radius: 1,
+          radius: 2,
         },
         {
           name: "Sonic",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723882147/pngwing.com_4_b1k9qe.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723882147/pngwing.com_4_b1k9qe.png",
           x: 72,
           y: 67,
-          radius: 1,
+          radius: 2,
         },
       ],
     });
-    console.log("Character created");
+    console.log("Characters created for Universe 113");
   } catch (err) {
     console.error("Error inserting characters:", err);
   }
@@ -121,8 +141,7 @@ async function insertCharacters3rdImage() {
         {
           name: "Crash",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723935171/pngwing.com_7_umxlxd.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723935171/pngwing.com_7_umxlxd.png",
           x: 52,
           y: 58,
           radius: 2,
@@ -130,99 +149,41 @@ async function insertCharacters3rdImage() {
         {
           name: "Saitama",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723935219/pngwing.com_8_me5w5u.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723935219/pngwing.com_8_me5w5u.png",
           x: 34,
           y: 61,
-          radius: 3,
+          radius: 2,
         },
         {
           name: "Guts",
           imageId: image.id,
-          picture:
-            "https://res.cloudinary.com/dy0av590l/image/upload/v1723935288/pngwing.com_9_ckyisy.png",
+          picture: "https://res.cloudinary.com/dy0av590l/image/upload/v1723935288/pngwing.com_9_ckyisy.png",
           x: 49,
           y: 89,
-          radius: 3,
+          radius: 2,
         },
       ],
     });
-    console.log("Character created");
+    console.log("Characters created for Universe 113 Infested");
   } catch (err) {
     console.error("Error inserting characters:", err);
   }
 }
 
-async function updateCharacterUrls() {
-  const image = await prisma.image.findFirst({
-    where: { title: "Universe 113" },
-  });
-
-  const charactersData = [
-    {
-      name: "Sonic",
-      imageId: image.id,
-      picture:
-        "https://res.cloudinary.com/dy0av590l/image/upload/v1723882147/pngwing.com_4_b1k9qe.png",
-      x: 72,
-      y: 67,
-      radius: 1,
-    },
-  ];
-
+async function resetAndPopulateDatabase() {
   try {
-    for (const character of charactersData) {
-      await prisma.character.updateMany({
-        where: {
-          name: character.name,
-          imageId: image.id,
-        },
-        data: {
-          picture: character.picture,
-        },
-      });
-      console.log(`Updated URL for ${character.name}`);
-    }
-    console.log("All character URLs updated successfully");
+    await clearDatabase();
+    await insertImages();
+    await insertCharacters();
+    await insertCharacters2ndImage();
+    await insertCharacters3rdImage();
+    console.log("Database reset and populated successfully");
   } catch (err) {
-    console.error("Error updating character URLs:", err);
-  }
-}
-
-async function deletePokemonImageData() {
-  try {
-    // Find the image with title "pokemon"
-    const pokemonImage = await prisma.image.findFirst({
-      where: { title: "pokemon" },
-      include: { characters: true, leaderboard: true },
-    });
-
-    if (!pokemonImage) {
-      console.log('No image with title "pokemon" found');
-      return;
-    }
-
-    // Delete associated characters
-    await prisma.character.deleteMany({
-      where: { imageId: pokemonImage.id },
-    });
-
-    // Delete associated leaderboard entries
-    await prisma.leaderboard.deleteMany({
-      where: { imageId: pokemonImage.id },
-    });
-
-    // Finally, delete the image itself
-    await prisma.image.delete({
-      where: { id: pokemonImage.id },
-    });
-
-    console.log('Successfully deleted all data related to the "pokemon" image');
-  } catch (error) {
-    console.error("Error deleting data:", error);
+    console.error("Error in resetAndPopulateDatabase:", err);
   } finally {
     await prisma.$disconnect();
   }
 }
 
-insertCharacters3rdImage();
+// Run the script
+resetAndPopulateDatabase();

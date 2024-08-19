@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import "dotenv/config";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -12,8 +14,9 @@ export const getImages = async (req, res, next) => {
   }
 };
 
-export const getAllCharactersForImage = async (req, res, next) => {
+export const getAllCharactersForImage = async (req, res) => {
   const id = req.params.id;
+
   try {
     const game = await prisma.image.findUnique({
       where: { id: id },
@@ -26,12 +29,27 @@ export const getAllCharactersForImage = async (req, res, next) => {
             id: true,
             name: true,
             picture: true,
-          }
-        }}})
-    res.json(game)
+          },
+        },
+      },
+    });
+
+    if (!game) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+
+    const sessionData = {
+      imageId: id,
+      startTime: Date.now(),
+    };
+
+    const token = jwt.sign(sessionData, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+
+    res.json({ ...game, sessionToken: token });
   } catch (err) {
-    console.error("Error fetching all game info:", err);
+    console.error("Error fetching game info:", err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
